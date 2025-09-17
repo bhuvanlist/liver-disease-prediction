@@ -1,37 +1,45 @@
 # predict.py
-import pickle
+import joblib
 import numpy as np
 
-with open("liver_model.pkl", "rb") as f:
-    saved = pickle.load(f)
+# Load the compressed model file
+model_bundle = joblib.load("liver_model_compressed.pkl")
 
-model = saved["model"]
-scaler = saved["scaler"]
-imputer = saved["imputer"]
-threshold = saved["threshold"]
-feature_columns = saved["feature_columns"]
+model = model_bundle["model"]
+scaler = model_bundle["scaler"]
+imputer = model_bundle["imputer"]
+threshold = model_bundle["threshold"]
+feature_columns = model_bundle["feature_columns"]
 
 print("🔹 Enter patient details:")
-values = []
+
+# Collect user input
+patient_data = {}
 for col in feature_columns:
-    val = input(f"{col}: ")
+    value = input(f"{col}: ")
     try:
-        val = float(val)
-    except:
-        val = np.nan
-    values.append(val)
+        patient_data[col] = float(value)
+    except ValueError:
+        patient_data[col] = np.nan  # handle missing input
 
-X_new = np.array(values).reshape(1, -1)
+# Convert to array in correct order
+X = np.array([[patient_data[col] for col in feature_columns]])
 
-# Preprocess
-X_new = imputer.transform(X_new)
-X_new = scaler.transform(X_new)
+# Preprocess: impute missing + scale
+X_imputed = imputer.transform(X)
+X_scaled = scaler.transform(X_imputed)
 
-# Predict
-proba = model.predict_proba(X_new)[0, 1]
-pred = int(proba >= threshold)
-confidence = proba * 100 if pred == 1 else (1 - proba) * 100
+# Predict probability
+prob = model.predict_proba(X_scaled)[0, 1]
 
-print(f"\n✅ Prediction: {'Positive (Disease)' if pred==1 else 'Negative (Healthy)'}")
-print(f"🔎 Confidence: {confidence:.2f}% (Threshold={threshold:.2f})")
+# Apply threshold
+pred = int(prob >= threshold)
 
+# Confidence %
+confidence = round(prob * 100, 2)
+
+# Map prediction
+label = "Positive (Liver Disease)" if pred == 1 else "Negative (Healthy)"
+
+print(f"\n✅ Prediction: {label}")
+print(f"🔎 Confidence: {confidence}% (Threshold={threshold:.2f})")
