@@ -23,7 +23,7 @@ st.markdown(
     """
     <style>
     body {
-        background-color: #f0f8ff; /* light medical blue */
+        background-color: #f0f8ff; /* light blue */
     }
     .main {
         background-color: #ffffff;
@@ -31,10 +31,10 @@ st.markdown(
         border-radius: 15px;
     }
     h1, h2, h3 {
-        color: #004080; /* deep blue */
+        color: #004080; /* hospital blue */
     }
     .stButton button {
-        background: linear-gradient(90deg, #ff7f50, #ff4500);
+        background: linear-gradient(90deg, #28a745, #20c997);
         color: white;
         font-weight: bold;
         border-radius: 12px;
@@ -42,7 +42,7 @@ st.markdown(
         border: none;
     }
     .stButton button:hover {
-        background: linear-gradient(90deg, #ff6347, #e63900);
+        background: linear-gradient(90deg, #218838, #17a2b8);
         color: white;
     }
     .input-card {
@@ -53,13 +53,13 @@ st.markdown(
         margin-bottom: 20px;
     }
     .prediction-box {
-        padding: 20px;
+        padding: 25px;
         border-radius: 15px;
         text-align: center;
-        font-size: 20px;
+        font-size: 22px;
         font-weight: bold;
         color: white;
-        margin-top: 20px;
+        margin-top: 30px;
     }
     .healthy {
         background-color: #28a745; /* green */
@@ -87,7 +87,7 @@ if page == "Home":
     st.title("🩺 Liver Disease Prediction System")
     st.markdown(
         """
-        Welcome to the **Liver Disease Prediction Web App** 🎉  
+        Welcome to the **Liver Disease Prediction System**.  
 
         ---
         > *“The liver is a resilient organ – treat it with care.”*  
@@ -96,7 +96,6 @@ if page == "Home":
         """
     )
 
-    # Show images
     col1, col2 = st.columns(2)
     with col1:
         st.image("static/images/liver1.jpg", caption="Human Liver Anatomy", use_container_width=True)
@@ -108,7 +107,7 @@ if page == "Home":
 # -------------------------------
 elif page == "Predict":
     st.header("🔮 Predict Liver Disease")
-    st.markdown("Fill in the details below to check the **liver health status**:")
+    st.markdown("Enter the patient details below:")
 
     with st.form("prediction_form"):
         col1, col2 = st.columns(2)
@@ -172,4 +171,3 @@ elif page == "Predict":
                 f"<div class='prediction-box healthy'>✅ Healthy Liver<br>Confidence: {confidence}%</div>",
                 unsafe_allow_html=True,
             )
-
