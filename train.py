@@ -181,4 +181,23 @@ with open("liver_model.pkl", "wb") as f:
     pickle.dump(save_dict, f)
 
 print("\n✅ Saved liver_model.pkl with model, scaler, imputer, threshold, feature_columns, and metrics.")
+import joblib
+import pickle
+
+# ---------- Save everything needed for deployment ----------
+save_dict = {
+    "model": best_model,
+    "scaler": scaler,
+    "imputer": imputer,
+    "threshold": best_threshold,
+    "feature_columns": list(X.columns)
+}
+
+# Save regular version (local use)
+joblib.dump(save_dict, "liver_model.pkl")
+print("\n✅ Saved liver_model.pkl (full size)")
+
+# Save compressed version (GitHub-friendly)
+joblib.dump(save_dict, "liver_model_compressed.pkl", compress=3)
+print("✅ Saved liver_model_compressed.pkl (compressed for GitHub)")
 
