@@ -5,7 +5,8 @@ import numpy as np
 # -------------------------------
 # Load Model
 # -------------------------------
-model_data = joblib.load("liver_model.pkl")
+model_data = joblib.load("liver_model_compressed.pkl")
+
 model = model_data["model"]
 scaler = model_data["scaler"]
 imputer = model_data["imputer"]
