@@ -206,9 +206,7 @@ elif page == "Predict":
             st.write(f"**Liver Disease Type:** {disease_type}")
 
             # Cancer only if toggle is enabled
-            if cancer_check:
-                cancer_type = cancer_map[cluster_pred]
-                st.write(f"**Cancer:** {yes}")
+           
 
         else:
             st.markdown(
