@@ -99,7 +99,7 @@ if page == "Home":
 
     col1, col2 = st.columns(2)
     with col1:
-        st.image("static/images/liver1.jpg", caption="Human Liver Anatomy")
+        st.image("static/images/liver1.jpg", caption="Human Liver ")
     with col2:
         st.image("static/images/liver2.jpg", caption="Liver Position in Human Body")
 
