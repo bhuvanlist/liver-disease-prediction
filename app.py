@@ -78,10 +78,10 @@ page = st.sidebar.radio("Go to:", ["Home", "Predict"])
 # Home Page
 # -------------------------------
 if page == "Home":
-    st.title("🩺 Liver & Cancer Prediction System")
+    st.title("🩺 Liver Disease Prediction System")
     st.markdown(
         """
-        Welcome to the **Liver & Cancer Prediction System**.  
+        Welcome to the **Liver Disease Prediction System**.  
 
         ---
         > *“The liver is a resilient organ – treat it with care.”*  
@@ -184,10 +184,10 @@ def predict_case(input_df, cancer_check=True):
 # Home Page
 # -------------------------------
 if page == "Home":
-    st.title("🩺 Liver & Cancer Prediction System")
+    st.title("🩺 Liver Disease System")
     st.markdown(
         """
-        Welcome to the **Liver & Cancer Prediction System**.  
+        Welcome to the **Liver Disease Prediction System**.  
 
         ---
         > *“The liver is a resilient organ – treat it with care.”*  
@@ -201,7 +201,7 @@ if page == "Home":
 # Prediction Page
 # -------------------------------
 elif page == "Predict":
-    st.header("🔮 Predict Liver Disease & Cancer")
+    st.header("🔮 Predict Liver Disease")
     st.markdown("Choose between **manual input** or **CSV upload**:")
 
     mode = st.radio("Select Mode:", ["Single Input", "Batch CSV Upload"])
