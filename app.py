@@ -176,7 +176,7 @@ def predict_case(input_df, cancer_check=True):
 # -------------------------------
 # Page Config
 # -------------------------------
-st.set_page_config(page_title="Liver & Cancer Prediction", layout="wide")
+
 
 
 
