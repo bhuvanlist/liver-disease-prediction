@@ -180,7 +180,7 @@ if page == "Home":
     st.title("🩺 ")
     st.markdown(
         """
-        Goto Pridict page fo prediction in **Menu**.  
+        Go to Predict page fo prediction in **Menu**.  
 
         """
         
