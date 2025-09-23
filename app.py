@@ -177,16 +177,12 @@ def predict_case(input_df, cancer_check=True):
 # Page Config
 # -------------------------------
 if page == "Home":
-    st.title("🩺 Liver Disease System")
+    st.title("🩺 ")
     st.markdown(
         """
-        Welcome to the **Liver Disease Prediction System**.  
+        Goto Pridict page fo prediction in **Menu**.  
 
-        ---
-        > *“The liver is a resilient organ – treat it with care.”*  
-        > *“An ounce of prevention is worth a pound of cure.”*  
-        ---
-        """
+        
     )
 
 
