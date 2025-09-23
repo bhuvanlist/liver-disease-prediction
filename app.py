@@ -8,7 +8,7 @@ import joblib
 # -------------------------------
 # Page Config
 # -------------------------------
-st.set_page_config(page_title="Liver & Cancer Prediction", layout="wide")
+st.set_page_config(page_title="Liver Disease Prediction", layout="wide")
 
 # -------------------------------
 # Custom CSS
@@ -183,18 +183,7 @@ def predict_case(input_df, cancer_check=True):
 # -------------------------------
 # Home Page
 # -------------------------------
-if page == "Home":
-    st.title("🩺 Liver Disease System")
-    st.markdown(
-        """
-        Welcome to the **Liver Disease Prediction System**.  
 
-        ---
-        > *“The liver is a resilient organ – treat it with care.”*  
-        > *“An ounce of prevention is worth a pound of cure.”*  
-        ---
-        """
-    )
 
 
 # -------------------------------
