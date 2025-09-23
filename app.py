@@ -182,6 +182,7 @@ if page == "Home":
         """
         Goto Pridict page fo prediction in **Menu**.  
 
+        """
         
     )
 
