@@ -121,11 +121,11 @@ disease_map = cluster_data["disease_map"]
 
 # Cancer mapping
 cancer_map = {
-    0: "Cancer",
-    1: "No Cancer",
-    2: "Cancer",
-    3: "Cancer",
-    4: "Cancer"
+    0: "YES",
+    1: "NO",
+    2: "YES",
+    3: "YES",
+    4: "YES"
 }
 
 # -------------------------------
@@ -246,7 +246,7 @@ elif page == "Predict":
             else:
                 st.error(f"⚠️ {result['Disease']} Detected (Confidence: {result['Confidence']})")
                 if "Cancer_Risk" in result:
-                    st.warning(f"🔬 Cancer Risk: {result['Cancer_Risk']}")
+                    st.warning(f"🔬 Risk of Cancer: {result['Cancer_Risk']}")
 
     # -------------------------------
     # CSV Upload
