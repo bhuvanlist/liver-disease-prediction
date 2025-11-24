@@ -8,7 +8,7 @@ import joblib
 # -------------------------------
 # Page Config
 # -------------------------------
-st.set_page_config(page_title="Liver Disease Prediction", layout="wide")
+st.set_page_config(page_title="Liver & Cancer Prediction", layout="wide")
 
 # -------------------------------
 # Custom CSS
@@ -78,10 +78,10 @@ page = st.sidebar.radio("Go to:", ["Home", "Predict"])
 # Home Page
 # -------------------------------
 if page == "Home":
-    st.title("🩺 Liver Disease Prediction System")
+    st.title("🩺 Liver & Cancer Prediction System")
     st.markdown(
         """
-        Welcome to the **Liver Disease Prediction System**.  
+        Welcome to the **Liver & Cancer Prediction System**.  
 
         ---
         > *“The liver is a resilient organ – treat it with care.”*  
@@ -113,7 +113,7 @@ imputer = old_model_data["imputer"]
 # -------------------------------
 # Load Cluster Model (Disease Classification)
 # -------------------------------
-cluster_data = joblib.load("liver_cluster_model.pkl")
+cluster_data = joblib.load("liver_cluster_model_remapped_greedy.pkl")
 cluster_model = cluster_data["cluster_model"]
 imputer_cluster = cluster_data["imputer"]
 scaler_cluster = cluster_data["scaler"]
@@ -121,11 +121,11 @@ disease_map = cluster_data["disease_map"]
 
 # Cancer mapping
 cancer_map = {
-    0: "YES",
-    1: "NO",
-    2: "YES",
-    3: "YES",
-    4: "YES"
+    0: "Cancer",
+    1: "No Cancer",
+    2: "Cancer",
+    3: "Cancer",
+    4: "Cancer"
 }
 
 # -------------------------------
@@ -146,11 +146,11 @@ def confidence_label(prob):
 # -------------------------------
 def predict_case(input_df, cancer_check=True):
     # Normalize to correct spelling
-    if "Total_Protiens" in input_df.columns:
-        input_df.rename(columns={"Total_Protiens": "Total_Proteins"}, inplace=True)
+    if "Total_Proteins" in input_df.columns:
+        input_df.rename(columns={"Total_Proteins": "Total_Proteins"}, inplace=True)
 
-    # -------- Binary model expects 'Total_Protiens' --------
-    input_binary = input_df.rename(columns={"Total_Proteins": "Total_Protiens"})
+    # -------- Binary model expects 'Total_Proteins' --------
+    input_binary = input_df.rename(columns={"Total_Proteins": "Total_Proteins"})
     X_imp = imputer.transform(input_binary)
     X_scaled = scaler.transform(X_imp)
     pred = model.predict(X_scaled)[0]
@@ -161,7 +161,7 @@ def predict_case(input_df, cancer_check=True):
         return {"Disease": "No Disease", "Confidence": conf}
 
     # -------- Cluster model expects 'Total_Proteins' --------
-    input_cluster = input_df.rename(columns={"Total_Protiens": "Total_Proteins"})
+    input_cluster = input_df.rename(columns={"Total_Proteins": "Total_Proteins"})
     Xc_imp = imputer_cluster.transform(input_cluster)
     Xc_scaled = scaler_cluster.transform(Xc_imp)
     cluster_pred = cluster_model.predict(Xc_scaled)[0]
@@ -176,29 +176,32 @@ def predict_case(input_df, cancer_check=True):
 # -------------------------------
 # Page Config
 # -------------------------------
-if page == "Home":
-    st.title("🩺 ")
-    st.markdown(
-        """
-        Go to Predict page fo prediction in **Menu**.  
-
-        """
-        
-    )
+st.set_page_config(page_title="Liver & Cancer Prediction", layout="wide")
 
 
 
 # -------------------------------
 # Home Page
 # -------------------------------
+if page == "Home":
+    st.title("🩺 Liver & Cancer Prediction System")
+    st.markdown(
+        """
+        Welcome to the **Liver & Cancer Prediction System**.  
 
+        ---
+        > *“The liver is a resilient organ – treat it with care.”*  
+        > *“An ounce of prevention is worth a pound of cure.”*  
+        ---
+        """
+    )
 
 
 # -------------------------------
 # Prediction Page
 # -------------------------------
 elif page == "Predict":
-    st.header("🔮 Predict Liver Disease")
+    st.header("🔮 Predict Liver Disease & Cancer")
     st.markdown("Choose between **manual input** or **CSV upload**:")
 
     mode = st.radio("Select Mode:", ["Single Input", "Batch CSV Upload"])
@@ -245,8 +248,7 @@ elif page == "Predict":
                 st.success(f"✅ No Liver Disease Detected (Confidence: {result['Confidence']})")
             else:
                 st.error(f"⚠️ {result['Disease']} Detected (Confidence: {result['Confidence']})")
-                if "Cancer_Risk" in result:
-                    st.warning(f"🔬 Risk of Cancer: {result['Cancer_Risk']}")
+                
 
     # -------------------------------
     # CSV Upload
@@ -255,9 +257,18 @@ elif page == "Predict":
         uploaded_file = st.file_uploader("Upload CSV File with Test Cases", type=["csv"])
         if uploaded_file:
             df = pd.read_csv(uploaded_file)
-
+            if "Gender" in df.columns:
+                df["Gender"] = df["Gender"].astype(str).str.strip().str.lower()
+                df["Gender"] = df["Gender"].replace({
+                    "male": 0, "m": 0,
+                    "female": 1, "f": 1
+                })
+            else:
+            	st.warning("⚠️ Gender column missing in CSV!")
+            
+            
             # Normalize once
-            df.rename(columns={"Total_Protiens": "Total_Proteins"}, inplace=True)
+            df.rename(columns={"Total_Proteins": "Total_Proteins"}, inplace=True)
 
             predictions = []
             for _, row in df.iterrows():
@@ -267,8 +278,8 @@ elif page == "Predict":
             # Flatten predictions
             df["Disease"] = [p["Disease"] for p in predictions]
             df["Confidence"] = [p["Confidence"] for p in predictions]
-            if cancer_check:
-                df["Cancer_Risk"] = [p.get("Cancer_Risk", "N/A") for p in predictions]
+            
+             
 
             st.subheader("📊 Batch Predictions")
             st.dataframe(df)
@@ -276,4 +287,3 @@ elif page == "Predict":
             # Download option
             csv_out = df.to_csv(index=False).encode("utf-8")
             st.download_button("⬇️ Download Results", csv_out, "predictions.csv", "text/csv")
-
