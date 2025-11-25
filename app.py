@@ -1,4 +1,6 @@
 import streamlit as st
+st.set_page_config(page_title="Liver & Cancer Prediction", layout="wide")
+
 import numpy as np
 import pandas as pd
 import joblib
@@ -8,7 +10,6 @@ import joblib
 # -------------------------------
 # Page Config
 # -------------------------------
-st.set_page_config(page_title="Liver & Cancer Prediction", layout="wide")
 
 # -------------------------------
 # Custom CSS
